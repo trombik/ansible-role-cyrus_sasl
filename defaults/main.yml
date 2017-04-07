@@ -1,0 +1,8 @@
+cyrus-sasl_user: cyrus-sasl
+cyrus-sasl_group: cyrus-sasl
+cyrus-sasl_log_dir: /var/log/cyrus-sasl
+cyrus-sasl_db_dir: "{{ __cyrus-sasl_db_dir }}"
+cyrus-sasl_service: cyrus-sasl
+cyrus-sasl_conf_dir: "{{ __cyrus-sasl_conf_dir }}"
+cyrus-sasl_conf_file: "{{ __cyrus-sasl_conf_dir }}/cyrus-sasl.conf"
+cyrus-sasl_flags: ""

@@ -1,0 +1,37 @@
+---
+# tasks file for ansible-role-cyrus-sasl
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: "install-{{ ansible_os_family }}.yml"
+
+- name: Create log directory
+  file:
+    path: "{{ cyrus-sasl_log_dir }}"
+    mode: 0755
+    owner: "{{ cyrus-sasl_user }}"
+    group: "{{ cyrus-sasl_group }}"
+    state: directory
+  notify: Restart cyrus-sasl
+
+- name: Create db directory
+  file:
+    path: "{{ cyrus-sasl_db_dir }}"
+    mode: 0755
+    owner: "{{ cyrus-sasl_user }}"
+    group: "{{ cyrus-sasl_group }}"
+    state: directory
+  notify: Restart cyrus-sasl
+
+- name: Create cyrus-sasl.conf
+  template:
+    src: cyrus-sasl.conf.j2
+    dest: "{{ cyrus-sasl_conf_file }}"
+    validate: echo %s
+  notify: Restart cyrus-sasl
+
+- name: Start cyrus-sasl
+  service:
+    name: "{{ cyrus-sasl_service }}"
+    enabled: true
+    state: started

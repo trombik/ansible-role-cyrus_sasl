@@ -1,0 +1,6 @@
+---
+
+- name: Install cyrus-sasl
+  pkgng:
+    name: cyrus-sasl
+    state: present

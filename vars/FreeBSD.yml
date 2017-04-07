@@ -1,0 +1,2 @@
+__cyrus-sasl_db_dir: /var/db/cyrus-sasl
+__cyrus-sasl_conf_dir: /usr/local/etc/cyrus-sasl

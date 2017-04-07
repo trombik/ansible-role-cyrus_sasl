@@ -1,0 +1,6 @@
+---
+
+- name: Restart cyrus-sasl
+  service:
+    name: cyrus-sasl
+    state: restarted
