@@ -1,0 +1,11 @@
+---
+
+- name: Install cyrus-sasl
+  apt:
+    name: "{{ cyrus_sasl_package }}"
+    state: present
+
+- name: Install sasl2-bin
+  apt:
+    name: sasl2-bin
+    state: present

@@ -1,0 +1,6 @@
+---
+
+- name: Install cyrus-sasl
+  openbsd_pkg:
+    name: "{{ cyrus_sasl_package }}"
+    state: present

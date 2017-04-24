@@ -1,0 +1,6 @@
+---
+
+- name: Install cyrus-sasl
+  yum:
+    name: "{{ cyrus_sasl_package }}"
+    state: present

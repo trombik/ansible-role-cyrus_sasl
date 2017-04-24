@@ -1,5 +1,4 @@
 cyrus_sasl_user: cyrus
-cyrus_sasl_group: cyrus
 cyrus_sasl_package: "{{ __cyrus_sasl_package }}"
 cyrus_sasl_saslpassword_command: "{{ __cyrus_sasl_saslpassword_command }}"
 cyrus_sasl_sasldblistusers_command: "{{ __cyrus_sasl_sasldblistusers_command }}"
