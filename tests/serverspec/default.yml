@@ -2,4 +2,9 @@
   roles:
     - ansible-role-cyrus-sasl
   vars:
-    cyrus-sasl_config: ""
+    cyrus_sasl_user:
+      foo:
+        domain: reallyenglish.com
+        password: password
+        appname: argus
+        state: present

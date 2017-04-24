@@ -1,8 +1,8 @@
-cyrus-sasl_user: cyrus-sasl
-cyrus-sasl_group: cyrus-sasl
-cyrus-sasl_log_dir: /var/log/cyrus-sasl
-cyrus-sasl_db_dir: "{{ __cyrus-sasl_db_dir }}"
-cyrus-sasl_service: cyrus-sasl
-cyrus-sasl_conf_dir: "{{ __cyrus-sasl_conf_dir }}"
-cyrus-sasl_conf_file: "{{ __cyrus-sasl_conf_dir }}/cyrus-sasl.conf"
-cyrus-sasl_flags: ""
+cyrus_sasl_user: cyrus
+cyrus_sasl_group: cyrus
+cyrus_sasl_package: "{{ __cyrus_sasl_package }}"
+cyrus_sasl_saslpassword_command: "{{ __cyrus_sasl_saslpassword_command }}"
+cyrus_sasl_sasldblistusers_command: "{{ __cyrus_sasl_sasldblistusers_command }}"
+cyrus_sasl_sasldb_file: "{{ __cyrus_sasl_sasldb_file }}"
+
+cyrus_sasl_user: {}

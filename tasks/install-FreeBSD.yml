@@ -2,5 +2,5 @@
 
 - name: Install cyrus-sasl
   pkgng:
-    name: cyrus-sasl
+    name: "{{ cyrus_sasl_package }}"
     state: present

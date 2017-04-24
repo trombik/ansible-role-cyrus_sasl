@@ -1,2 +1,4 @@
-__cyrus-sasl_db_dir: /var/db/cyrus-sasl
-__cyrus-sasl_conf_dir: /usr/local/etc/cyrus-sasl
+__cyrus_sasl_package: cyrus-sasl
+__cyrus_sasl_saslpassword_command: saslpasswd2
+__cyrus_sasl_sasldblistusers_command: sasldblistusers2
+__cyrus_sasl_sasldb_file: /usr/local/etc/sasldb2
