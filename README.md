@@ -1,6 +1,7 @@
 # ansible-role-cyrus-sasl
 
-Installs `cyrus-sasl` and configures users in `sasl2.db`.
+Installs `cyrus-sasl` and configures users in `sasl2.db`. This role supports
+local SASL database only. If you want other back-ends, this is not for you.
 
 ## `sasl_check_pw`
 
