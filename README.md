@@ -2,6 +2,25 @@
 
 Installs `cyrus-sasl` and configures users in `sasl2.db`.
 
+## `sasl_check_pw`
+
+This role installs a python script to check password of a user under
+`/usr/local/bin` on all platforms. As `cyrus-sasl` does not provide a command
+to authenticate user with password, the script reads `cyrus_sasl_sasldb_file`
+and looks for the user and its password. The script assumes that
+`cyrus_sasl_sasldb_file` is `dbm` format.
+
+```sh
+sasl_check_pw path user domain
+```
+
+`path` is the path to `cyrus_sasl_sasldb_file`. `user` is the user name in
+`cyrus_sasl_sasldb_file`, and `domain` is the domain name where the user belong
+to. Set the password to check in an environment variable, `userPassword`. When
+the password matches the one in `cyrus_sasl_sasldb_file`, it prints `matched`
+to `stdout`. When it does not, it prints `does not match` to `stdout`. It must
+be executed by a user with read permission on `cyrus_sasl_sasldb_file`.
+
 # Requirements
 
 None
