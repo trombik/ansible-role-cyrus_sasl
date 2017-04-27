@@ -1,5 +1,28 @@
 ---
 
+- name: Create /etc/default/saslauthd
+  # surprisingly, saslauthd does not start by default. the init script prevents
+  # the daemon from running if START in /etc/default/saslauthd is "no". but when
+  # managed by systemd, it confuses systemd and subsequent `systemctl start saslauthd`
+  # misteriously fails. the first attempt to start the daemon, which is usually
+  # performed when a package is installed, must suceed. thus, the file must be
+  # created before install.
+  template:
+    src: Debian.default.j2
+    dest: /etc/default/saslauthd
+    backup: yes
+  register: register_default_saslauthd
+
+- name: Remove /run/systemd/generator.late/saslauthd.service
+  # make sure that the auto-genrated unit file is always valid. even if it has
+  # been created when `START` is set to `no`, removing the generated one ensures
+  # that it is valid.
+  file:
+    path: "/run/systemd/generator.late/{{ cyrus_sasl_saslauthd_service }}.service"
+    state: absent
+  when:
+    - register_default_saslauthd.changed
+
 - name: Install cyrus-sasl
   apt:
     name: "{{ cyrus_sasl_package }}"

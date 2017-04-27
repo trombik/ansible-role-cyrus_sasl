@@ -1,0 +1,4 @@
+# Managed by ansible
+{% for k, v in item.value | dictsort() %}
+{{ k }}: {{ v }}
+{% endfor %}

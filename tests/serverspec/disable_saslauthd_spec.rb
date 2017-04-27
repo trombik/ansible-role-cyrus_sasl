@@ -102,12 +102,14 @@ describe file ("#{ sasllib_dir }/argus.conf") do
 end
 
 describe command("testsaslauthd -u vagrant -p vagrant -s login") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/^0: OK "Success."$/) }
-  its(:stderr) { should eq "" }
+  its(:exit_status) { should_not eq 0 }
+  its(:stdout) { should_not match(/^0: OK "Success."$/) }
 end
 
 describe service(service) do
-  it { should be_enabled }
-  it { should be_running }
+  it { should_not be_enabled }
+  it do
+    pending "serverspec does not use onestatus to check the status" if os[:family] == "freebsd"
+    should_not be_running
+  end
 end

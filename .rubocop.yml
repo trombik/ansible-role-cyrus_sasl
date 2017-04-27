@@ -1,0 +1,18 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - "vendor/**/*"
+    - "tests/integration/**/roles/*"
+    # ignore these until rubocop is incorportaed into qansible
+    - Rakefile
+    - Gemfile
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Metrics/LineLength:
+  # https://github.com/reallyenglish/ansible-role-example/issues/60#issuecomment-282973178
+  Max: 256
+Metrics/BlockLength:
+  Exclude:
+    - tests/integration/**/Vagrantfile
+    - tests/integration/**/spec/*_spec.rb

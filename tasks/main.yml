@@ -5,6 +5,12 @@
 
 - include: "install-{{ ansible_os_family }}.yml"
 
+- name: Create plug-ins config
+  template:
+    src: sasl.conf.j2
+    dest: "{{ cyrus_sasl_plugin_dir }}/{{ item.key }}.conf"
+  with_dict: "{{ cyrus_sasl_config }}"
+
 - name: Get all SASL users
   shell: "{{ cyrus_sasl_sasldblistusers_command }} | cut -f1 -d':'"
   register: register_sasldblistusers
@@ -61,3 +67,19 @@
   no_log: yes
   when:
     - "'does not match' in item.stdout_lines"
+
+- name: Start saslauthd
+  service:
+    name: "{{ cyrus_sasl_saslauthd_service }}"
+    enabled: yes
+    state: started
+  when:
+    - cyrus_sasl_saslauthd_enable
+
+- name: Stop saslauthd
+  service:
+    name: "{{ cyrus_sasl_saslauthd_service }}"
+    enabled: no
+    state: stopped
+  when:
+    - not cyrus_sasl_saslauthd_enable

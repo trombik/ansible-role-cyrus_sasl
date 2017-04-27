@@ -1,7 +1,11 @@
 cyrus_sasl_user: cyrus
 cyrus_sasl_package: "{{ __cyrus_sasl_package }}"
+cyrus_sasl_saslauthd_service: "{{ __cyrus_sasl_saslauthd_service }}"
+cyrus_sasl_saslauthd_enable: yes
+cyrus_sasl_plugin_dir: "{{ __cyrus_sasl_plugin_dir }}"
 cyrus_sasl_saslpassword_command: "{{ __cyrus_sasl_saslpassword_command }}"
 cyrus_sasl_sasldblistusers_command: "{{ __cyrus_sasl_sasldblistusers_command }}"
 cyrus_sasl_sasldb_file: "{{ __cyrus_sasl_sasldb_file }}"
 
 cyrus_sasl_user: {}
+cyrus_sasl_config: {}

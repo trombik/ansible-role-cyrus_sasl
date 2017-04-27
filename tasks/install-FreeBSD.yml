@@ -4,3 +4,8 @@
   pkgng:
     name: "{{ cyrus_sasl_package }}"
     state: present
+
+- name: Install saslauthd
+  pkgng:
+    name: security/cyrus-sasl2-saslauthd
+    state: present

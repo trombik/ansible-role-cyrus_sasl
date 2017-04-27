@@ -15,3 +15,4 @@
         pwcheck_method: auxprop
         auxprop_plugin: sasldb
         mech_list: DIGEST-MD5
+    cyrus_sasl_saslauthd_enable: no

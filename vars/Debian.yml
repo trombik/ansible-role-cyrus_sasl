@@ -1,4 +1,6 @@
 __cyrus_sasl_package: libsasl2-2
+__cyrus_sasl_saslauthd_service: saslauthd
+__cyrus_sasl_plugin_dir: /usr/lib/sasl2
 __cyrus_sasl_saslpassword_command: saslpasswd2
 __cyrus_sasl_sasldblistusers_command: sasldblistusers2
 __cyrus_sasl_sasldb_file: /etc/sasldb2
