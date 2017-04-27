@@ -37,6 +37,26 @@
     - item.value.state == 'present'
     - not item.key ~ '@' ~ item.value.domain in register_sasldblistusers.stdout_lines
 
+- name: Set cyrus_sasl_sasldb_file_real_path
+  set_fact:
+    # BSDs appends '.db' to the given file name, but others treat it as-is
+    # see https://www.freebsd.org/cgi/man.cgi?dbm(3)
+    cyrus_sasl_sasldb_file_real_path: "{% if ansible_os_family == 'FreeBSD' or ansible_os_family == 'OpenBSD' %}{{ cyrus_sasl_sasldb_file }}.db{% else %}{{ cyrus_sasl_sasldb_file }}{% endif %}"
+
+- name: See if SASL DB file exists
+  stat:
+    path: "{{ cyrus_sasl_sasldb_file_real_path }}"
+  register: register_sasldb_file
+
+- name: Set group permission on SASL DB file
+  file:
+    path: "{{ cyrus_sasl_sasldb_file_real_path }}"
+    owner: "{{ cyrus_sasl_sasldb_owner }}"
+    group: "{{ cyrus_sasl_sasldb_group }}"
+    mode: "{{ cyrus_sasl_sasldb_file_permission }}"
+  when:
+    - register_sasldb_file.stat.exists
+
 - name: Create /usr/local/bin
   file:
     path: /usr/local/bin

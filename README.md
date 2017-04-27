@@ -1,6 +1,6 @@
 # ansible-role-cyrus-sasl
 
-Installs `cyrus-sasl`, `saslauthd` and configures users in `sasl2.db`. This
+Installs `cyrus-sasl`, `saslauthd` and configures users in SASL DB file. This
 role supports local SASL database and `saslauthd` only. If you want other back-ends, this is
 not for you.
 
@@ -31,16 +31,18 @@ None
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `cyrus_sasl_user` | a dict of SASL users to manage (see below) | `{}` |
 | `cyrus_sasl_package` | the package name of `cyrus-sasl` | `{{ __cyrus_sasl_package }}` |
 | `cyrus_sasl_saslauthd_service` | the service name of `saslauthd` | `{{ __cyrus_sasl_saslauthd_service }}` |
 | `cyrus_sasl_saslauthd_enable` | enable `saslauthd` if yes | yes |
 | `cyrus_sasl_plugin_dir` | the plugin directory where application config resides | `{{ __cyrus_sasl_plugin_dir }}` |
 | `cyrus_sasl_saslpassword_command` | the command to manage password of users | `{{ __cyrus_sasl_saslpassword_command }}` |
 | `cyrus_sasl_sasldblistusers_command` | the command to list users in the database | `{{ __cyrus_sasl_sasldblistusers_command }}` |
-| `cyrus_sasl_sasldb_file` | path to `sasl2.db` | `{{ __cyrus_sasl_sasldb_file }}` |
+| `cyrus_sasl_sasldb_file` | path to SASL DB file | `{{ __cyrus_sasl_sasldb_file }}` |
+| `cyrus_sasl_sasldb_owner` | owner of SASL DB file | `root` |
+| `cyrus_sasl_sasldb_group` | group of SASL DB file | `{{ __cyrus_sasl_sasldb_group }}` |
+| `cyrus_sasl_sasldb_file_permission` | file permission of SASL DB file | `{{  __cyrus_sasl_sasldb_file_permission }}` |
 | `cyrus_sasl_config` | a dict of application config (see below) | `{}` |
-| `cyrus_sasl_user` | a dict of users in `sasl2.db` (see below) | `{}` |
+| `cyrus_sasl_user` | a dict of users in SASL DB file (see below) | `{}` |
 
 ## `cyrus_sasl_config`
 
@@ -83,6 +85,8 @@ cyrus_sasl_user:
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
 | `__cyrus_sasl_sasldb_file` | `/etc/sasldb2` |
+| `__cyrus_sasl_sasldb_file_permission` | `0660` |
+| `__cyrus_sasl_sasldb_group` | `root` |
 
 ## FreeBSD
 
@@ -94,6 +98,8 @@ cyrus_sasl_user:
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
 | `__cyrus_sasl_sasldb_file` | `/usr/local/etc/sasldb2` |
+| `__cyrus_sasl_sasldb_file_permission` | `600` |
+| `__cyrus_sasl_sasldb_group` | `wheel` |
 
 ## OpenBSD
 
@@ -105,6 +111,8 @@ cyrus_sasl_user:
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
 | `__cyrus_sasl_sasldb_file` | `/etc/sasldb2` |
+| `__cyrus_sasl_sasldb_file_permission` | `600` |
+| `__cyrus_sasl_sasldb_group` | `wheel` |
 
 ## RedHat
 
@@ -116,6 +124,8 @@ cyrus_sasl_user:
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
 | `__cyrus_sasl_sasldb_file` | `/etc/sasldb2` |
+| `__cyrus_sasl_sasldb_file_permission` | `0640` |
+| `__cyrus_sasl_sasldb_group` | `root` |
 
 # Dependencies
 

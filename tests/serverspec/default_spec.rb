@@ -5,34 +5,29 @@ packages = []
 sasldblistusers_command = "sasldblistusers2"
 sasldb_file = "/etc/sasldb2"
 sasllib_dir = "/usr/lib/sasl2"
-group = "sasl"
+group = "nobody"
 default_user = "root"
 default_group = "root"
 service = "saslauthd"
 
-sasldb_permission = 660
+sasldb_permission = 640
 
 case os[:family]
 when "openbsd"
   packages = [ "cyrus-sasl" ]
-  group = "wheel"
   default_group = "wheel"
-  sasldb_permission = 600
   sasldb_file = "/etc/sasldb2.db"
   sasllib_dir = "/usr/local/lib/sasl2"
 when "ubuntu"
+  group = "nogroup"
   packages = [ "libsasl2-2", "sasl2-bin" ]
 when "redhat"
   packages = [ "cyrus-sasl" ]
-  sasldb_permission = 640
-  group = "root"
   sasllib_dir = "/usr/lib64/sasl2"
 when "freebsd"
   packages = [ "cyrus-sasl" ]
   sasldb_file = "/usr/local/etc/sasldb2.db"
-  sasldb_permission = 600
   sasllib_dir = "/usr/local/lib/sasl2"
-  group = "wheel"
   default_group = "wheel"
 end
 

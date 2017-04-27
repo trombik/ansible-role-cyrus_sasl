@@ -15,4 +15,6 @@
         pwcheck_method: auxprop
         auxprop_plugin: sasldb
         mech_list: DIGEST-MD5
+    cyrus_sasl_sasldb_group: "{% if ansible_os_family == 'Debian' %}nogroup{% else %}nobody{% endif %}"
+    cyrus_sasl_sasldb_file_permission: "0640"
     cyrus_sasl_saslauthd_enable: no

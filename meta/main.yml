@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Tomoyuki Sakurai
-  description: Configures cyrus-sasl and users in sasl2.db
+  description: Configures cyrus-sasl and users in SASL DB file
   company: Reallyenglish
   license: BSD
   min_ansible_version: 2.0
