@@ -1,0 +1,9 @@
+---
+
+- name: Enable saslauthd
+  service:
+    name: "{{ cyrus_sasl_saslauthd_service }}"
+    enabled: yes
+    arguments: "{{ cyrus_sasl_saslauthd_flags.flags }}"
+  when:
+    - cyrus_sasl_saslauthd_enable

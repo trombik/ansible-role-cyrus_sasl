@@ -3,7 +3,12 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
+- set_fact:
+    cyrus_sasl_saslauthd_flags_merged: "{{ cyrus_sasl_saslauthd_flags_default | combine(cyrus_sasl_saslauthd_flags) }}"
+
 - include: "install-{{ ansible_os_family }}.yml"
+
+- include: "configure-{{ ansible_os_family }}.yml"
 
 - name: Create plug-ins config
   template:
@@ -91,7 +96,6 @@
 - name: Start saslauthd
   service:
     name: "{{ cyrus_sasl_saslauthd_service }}"
-    enabled: yes
     state: started
   when:
     - cyrus_sasl_saslauthd_enable

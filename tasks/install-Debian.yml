@@ -11,7 +11,9 @@
     src: Debian.default.j2
     dest: /etc/default/saslauthd
     backup: yes
+    validate: sh -n %s
   register: register_default_saslauthd
+  notify: Restart saslauthd
 
 - name: Remove /run/systemd/generator.late/saslauthd.service
   # make sure that the auto-genrated unit file is always valid. even if it has

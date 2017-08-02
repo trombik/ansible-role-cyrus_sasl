@@ -1,0 +1,15 @@
+---
+
+- name: Create rc.conf.d/saslauthd
+  template:
+    src: FreeBSD.rc.conf.d.j2
+    dest: /etc/rc.conf.d/saslauthd
+    validate: sh -n %s
+  notify: Restart saslauthd
+
+- name: Enable saslauthd
+  service:
+    name: "{{ cyrus_sasl_saslauthd_service }}"
+    enabled: yes
+  when:
+    - cyrus_sasl_saslauthd_enable

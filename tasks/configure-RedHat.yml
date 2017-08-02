@@ -1,0 +1,16 @@
+---
+
+- name: Create /etc/sysconfig/saslauthd
+  template:
+    src: RedHat.sysconfig.j2
+    dest: /etc/sysconfig/saslauthd
+    backup: yes
+    validate: sh -n %s
+  notify: Restart saslauthd
+
+- name: Enable saslauthd
+  service:
+    name: "{{ cyrus_sasl_saslauthd_service }}"
+    enabled: yes
+  when:
+    - cyrus_sasl_saslauthd_enable

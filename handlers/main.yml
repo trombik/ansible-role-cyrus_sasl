@@ -4,3 +4,5 @@
   service:
     name: saslauthd
     state: restarted
+  when:
+    - cyrus_sasl_saslauthd_enable

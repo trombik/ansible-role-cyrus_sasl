@@ -1,0 +1,10 @@
+---
+
+# XXX /etc/default/saslauthd is created in tasks/install-Debian.yml
+
+- name: Enable saslauthd
+  service:
+    name: "{{ cyrus_sasl_saslauthd_service }}"
+    enabled: yes
+  when:
+    - cyrus_sasl_saslauthd_enable

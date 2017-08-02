@@ -9,4 +9,4 @@
 
   pre_tasks:
   roles:
-    - cyrus-sasl
+    - foo

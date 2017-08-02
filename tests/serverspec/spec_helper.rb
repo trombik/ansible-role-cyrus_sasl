@@ -10,4 +10,4 @@ options[:keys]      = ENV["KITCHEN_SSH_KEY"]
 
 set :host,        options[:host_name]
 set :ssh_options, options
-set :env, :LANG => "C", :LC_ALL => "C"
+set :env, LANG: "C", LC_ALL: "C"

@@ -34,6 +34,8 @@ None
 | `cyrus_sasl_package` | the package name of `cyrus-sasl` | `{{ __cyrus_sasl_package }}` |
 | `cyrus_sasl_saslauthd_service` | the service name of `saslauthd` | `{{ __cyrus_sasl_saslauthd_service }}` |
 | `cyrus_sasl_saslauthd_enable` | enable `saslauthd` if yes | yes |
+| `cyrus_sasl_saslauthd_flags` | dict of service variables and their values (see below) | `{}` |
+| `cyrus_sasl_saslauthd_flags_default` | default value of service variables and their values | `{{ __cyrus_sasl_saslauthd_flags_default }}` |
 | `cyrus_sasl_plugin_dir` | the plugin directory where application config resides | `{{ __cyrus_sasl_plugin_dir }}` |
 | `cyrus_sasl_saslpassword_command` | the command to manage password of users | `{{ __cyrus_sasl_saslpassword_command }}` |
 | `cyrus_sasl_sasldblistusers_command` | the command to list users in the database | `{{ __cyrus_sasl_sasldblistusers_command }}` |
@@ -43,6 +45,32 @@ None
 | `cyrus_sasl_sasldb_file_permission` | file permission of SASL DB file | `{{  __cyrus_sasl_sasldb_file_permission }}` |
 | `cyrus_sasl_config` | a dict of application config (see below) | `{}` |
 | `cyrus_sasl_user` | a dict of users in SASL DB file (see below) | `{}` |
+
+## `cyrus_sasl_saslauthd_flags`
+
+This variable is a dict of variables of startup configuration files, such as
+files under `/etc/default`, `/etc/sysconfig`, and `/etc/rc.conf.d`. It is
+assumed that the files are `source`d by startup mechanism with `sh(1)`. A key
+in the dict is name of the variable in the file, and the value of the key is
+value of the variable. The variable is combined with a variable whose name is
+same as this variable, but postfixed with `_default` (explained below) and the
+result creates the startup configuration file, usually a file consisting of
+lines of `key="value"` under appropriate directory for the platform.
+
+When the platform is OpenBSD, the above explanation does not apply. In this
+case, the only valid key is `flags` and the value of it is passed to
+`daemon_flags` described in [`rc.conf(5)`](http://man.openbsd.org/rc.conf),
+where `daemon` is the name of one of the `rc.d(8)` daemon control scripts.
+
+## `cyrus_sasl_saslauthd_flags_default`
+
+This variable is a dict of keys and values derived from upstream's default
+configuration, and is supposed to be a constant unless absolutely necessary. By
+default, the role creates a startup configuration file for each platform with
+this variable, identical to default one.
+
+When the platform is OpenBSD, the variable has a single key, `flags` and its
+value is empty string.
 
 ## `cyrus_sasl_config`
 
@@ -81,6 +109,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `libsasl2-2` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
+| `__cyrus_sasl_saslauthd_flags_default` | `{"MECHANISMS"=>"pam", "MECH_OPTIONS"=>"", "THREADS"=>5, "OPTIONS"=>"-c -m /var/run/saslauthd"}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
@@ -94,6 +123,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
+| `__cyrus_sasl_saslauthd_flags_default` | `{}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/local/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
@@ -107,6 +137,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl--` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
+| `__cyrus_sasl_saslauthd_flags_default` | `{"flags"=>"-a getpwent"}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/local/lib/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
@@ -120,6 +151,7 @@ cyrus_sasl_user:
 |----------|---------|
 | `__cyrus_sasl_package` | `cyrus-sasl` |
 | `__cyrus_sasl_saslauthd_service` | `saslauthd` |
+| `__cyrus_sasl_saslauthd_flags_default` | `{"SOCKETDIR"=>"/run/saslauthd", "MECH"=>"pam", "FLAGS"=>""}` |
 | `__cyrus_sasl_plugin_dir` | `/usr/lib64/sasl2` |
 | `__cyrus_sasl_saslpassword_command` | `saslpasswd2` |
 | `__cyrus_sasl_sasldblistusers_command` | `sasldblistusers2` |
@@ -151,6 +183,18 @@ None
         pwcheck_method: auxprop
         auxprop_plugin: sasldb
         mech_list: DIGEST-MD5
+    cyrus_sasl_sasldb_group: "{% if ansible_os_family == 'Debian' %}nogroup{% else %}nobody{% endif %}"
+    cyrus_sasl_sasldb_file_permission: "0640"
+
+    extra_variables_debian:
+      THREADS: 6
+    extra_variables_redhat:
+      FLAGS: -n 6
+    extra_variables_freebsd:
+      saslauthd_flags: -a pam -n 6
+    extra_variables_openbsd:
+      flags: -a getpwent -n 6
+    cyrus_sasl_saslauthd_flags: "{% if ansible_os_family == 'Debian' %}{{ extra_variables_debian }}{% elif ansible_os_family == 'RedHat' %}{{ extra_variables_redhat }}{% elif ansible_os_family == 'FreeBSD' %}{{ extra_variables_freebsd }}{% elif ansible_os_family == 'OpenBSD' %}{{ extra_variables_openbsd }}{% endif %}"
 ```
 
 # License
