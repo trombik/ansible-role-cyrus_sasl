@@ -91,10 +91,7 @@ when "freebsd"
   end
 
   describe process("saslauthd") do
-    its(:args) do
-      pending "process resource does not work on FreeBSD (ps -C is linuxism)"
-      should match(/-a pam -n 6/)
-    end
+    its(:args) { should match(/-a pam -n 6/) }
   end
 
   describe command("ps -ax -o command") do
