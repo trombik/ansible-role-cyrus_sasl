@@ -1,14 +1,14 @@
 ---
 # tasks file for ansible-role-cyrus-sasl
 
-- include_vars: "{{ ansible_os_family }}.yml"
+- name: "Include {{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_os_family }}.yml"
 
-- set_fact:
-    cyrus_sasl_saslauthd_flags_merged: "{{ cyrus_sasl_saslauthd_flags_default | combine(cyrus_sasl_saslauthd_flags) }}"
+- name: "Include install-{{ ansible_os_family }}.yml"
+  include: "install-{{ ansible_os_family }}.yml"
 
-- include: "install-{{ ansible_os_family }}.yml"
-
-- include: "configure-{{ ansible_os_family }}.yml"
+- name: "Include configure-{{ ansible_os_family }}.yml"
+  include: "configure-{{ ansible_os_family }}.yml"
 
 - name: Create plug-ins config
   template:
@@ -70,8 +70,8 @@
 
 - name: Create sasl_check_pw.py
   # XXX this script assumes dbm file
-  copy:
-    src: files/sasl_check_pw.py
+  template:
+    src: "{% if ansible_python.version.major == 2 %}sasl_check_pw.py2.j2{% else %}sasl_check_pw.py.j2{% endif %}"
     dest: /usr/local/bin/sasl_check_pw
     mode: 0755
 
@@ -82,14 +82,14 @@
   register: register_sasl_check_pw
   with_dict: "{{ cyrus_sasl_user }}"
   changed_when: false
-  no_log: yes
+  no_log: no
   when:
     - item.value.state == 'present'
 
 - name: Set password if necessary
   shell: "echo -n '{{ item.item.value.password }}' | {{ cyrus_sasl_saslpassword_command }} -p -f {{ cyrus_sasl_sasldb_file }} -u '{{ item.item.value.domain }}' '{{ item.item.key }}'"
   with_items: "{{ register_sasl_check_pw.results }}"
-  no_log: yes
+  no_log: no
   when:
     - "'does not match' in item.stdout_lines"
 

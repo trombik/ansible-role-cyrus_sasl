@@ -1,6 +1,6 @@
 - hosts: localhost
   roles:
-    - ansible-role-cyrus-sasl
+    - ansible-role-cyrus_sasl
   vars:
     cyrus_sasl_user:
       foo:
@@ -18,12 +18,20 @@
     cyrus_sasl_sasldb_group: "{% if ansible_os_family == 'Debian' %}nogroup{% else %}nobody{% endif %}"
     cyrus_sasl_sasldb_file_permission: "0640"
 
-    extra_variables_debian:
-      THREADS: 6
-    extra_variables_redhat:
-      FLAGS: -n 6
-    extra_variables_freebsd:
-      saslauthd_flags: -a pam -n 6
-    extra_variables_openbsd:
-      flags: -a getpwent -n 6
-    cyrus_sasl_saslauthd_flags: "{% if ansible_os_family == 'Debian' %}{{ extra_variables_debian }}{% elif ansible_os_family == 'RedHat' %}{{ extra_variables_redhat }}{% elif ansible_os_family == 'FreeBSD' %}{{ extra_variables_freebsd }}{% elif ansible_os_family == 'OpenBSD' %}{{ extra_variables_openbsd }}{% endif %}"
+    os_cyrus_sasl_saslauthd_flags:
+      FreeBSD: |
+        saslauthd_flags="-a pam -n 6"
+      OpenBSD: "-a getpwent -n 6"
+      RedHat: |
+        SOCKETDIR="/run/saslauthd"
+        MECH="pam"
+        FLAGS="-n 6"
+      Debian: |
+        START=yes
+        DESC="SASL Authentication Daemon"
+        NAME="saslauthd"
+        THREADS="6"
+        MECHANISMS="pam"
+        MECH_OPTIONS=""
+        OPTIONS="-c -m /var/run/saslauthd"
+    cyrus_sasl_saslauthd_flags: "{{ os_cyrus_sasl_saslauthd_flags[ansible_os_family] }}"
