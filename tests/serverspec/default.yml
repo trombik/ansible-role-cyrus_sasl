@@ -1,10 +1,11 @@
+---
 - hosts: localhost
   roles:
     - ansible-role-cyrus_sasl
   vars:
     cyrus_sasl_user:
       foo:
-        domain: reallyenglish.com
+        domain: trombik.org
         password: password
         appname: argus
         state: present
