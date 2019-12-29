@@ -1,6 +1,6 @@
 node ('virtualbox') {
 
-  def directory = "ansible-role-cyrus-sasl"
+  def directory = "trombik.template_role"
   env.ANSIBLE_VAULT_PASSWORD_FILE = "~/.ansible_vault_key"
   stage 'Clean up'
   deleteDir()
