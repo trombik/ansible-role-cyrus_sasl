@@ -1,0 +1,19 @@
+#!/usr/bin/env {{ ansible_python.executable }}
+import os
+import sys
+import dbm
+
+db_path = sys.argv[1]
+user = sys.argv[2]
+domain = sys.argv[3]
+password = os.environ["userPassword"]
+
+seq = (user, domain, "userPassword")
+key = chr(0).join( seq ).encode('ascii')
+
+with dbm.open(db_path, "r") as db:
+    if key in db.keys() and db[key].decode('ascii') == password:
+        print("matched")
+    else:
+        print("does not match")
+    db.close()

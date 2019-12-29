@@ -4,6 +4,6 @@
   service:
     name: "{{ cyrus_sasl_saslauthd_service }}"
     enabled: yes
-    arguments: "{{ cyrus_sasl_saslauthd_flags.flags }}"
+    arguments: "{{ cyrus_sasl_saslauthd_flags }}"
   when:
     - cyrus_sasl_saslauthd_enable

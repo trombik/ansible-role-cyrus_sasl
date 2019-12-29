@@ -17,16 +17,21 @@ when "openbsd"
   packages = ["cyrus-sasl"]
   default_group = "wheel"
   sasldb_file = "/etc/sasldb2.db"
+  sasldb_path = "/etc/sasldb2"
   sasllib_dir = "/usr/local/lib/sasl2"
 when "ubuntu"
   group = "nogroup"
   packages = ["libsasl2-2", "sasl2-bin"]
+  sasldb_path = sasldb_file
 when "redhat"
   packages = ["cyrus-sasl"]
   sasllib_dir = "/usr/lib64/sasl2"
+  sasldb_file = "/etc/sasldb2"
+  sasldb_path = sasldb_file
 when "freebsd"
   packages = ["cyrus-sasl"]
   sasldb_file = "/usr/local/etc/sasldb2.db"
+  sasldb_path = "/usr/local/etc/sasldb2"
   sasllib_dir = "/usr/local/lib/sasl2"
   default_group = "wheel"
 end
@@ -37,7 +42,7 @@ packages.each do |p|
   end
 end
 
-describe file(sasldb_file) do
+describe file("#{sasldb_file}") do
   it { should be_file }
   it { should be_mode sasldb_permission }
   it { should be_owned_by default_user }
@@ -51,7 +56,7 @@ describe file("/usr/local/bin/sasl_check_pw") do
   it { should be_grouped_into default_group }
 end
 
-describe command("env userPassword='password' /usr/local/bin/sasl_check_pw #{sasldb_file} foo reallyenglish.com") do
+describe command("env userPassword='password' /usr/local/bin/sasl_check_pw #{sasldb_path} foo reallyenglish.com") do
   its(:stdout) { should match(/^matched$/) }
   its(:stderr) { should match(/^$/) }
   its(:exit_status) { should eq 0 }
