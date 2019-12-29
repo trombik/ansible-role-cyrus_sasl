@@ -42,7 +42,7 @@ packages.each do |p|
   end
 end
 
-describe file("#{sasldb_file}") do
+describe file(sasldb_file.to_s) do
   it { should be_file }
   it { should be_mode sasldb_permission }
   it { should be_owned_by default_user }
@@ -56,14 +56,14 @@ describe file("/usr/local/bin/sasl_check_pw") do
   it { should be_grouped_into default_group }
 end
 
-describe command("env userPassword='password' /usr/local/bin/sasl_check_pw #{sasldb_path} foo reallyenglish.com") do
+describe command("env userPassword='password' /usr/local/bin/sasl_check_pw #{sasldb_path} foo trombik.org") do
   its(:stdout) { should match(/^matched$/) }
   its(:stderr) { should match(/^$/) }
   its(:exit_status) { should eq 0 }
 end
 
 describe command(sasldblistusers_command) do
-  its(:stdout) { should match(/^foo@reallyenglish\.com: userPassword$/) }
+  its(:stdout) { should match(/^foo@trombik\.org: userPassword$/) }
   its(:stderr) { should match(/^$/) }
   its(:exit_status) { should eq 0 }
 end

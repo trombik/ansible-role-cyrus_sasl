@@ -51,7 +51,7 @@ describe file("/usr/local/bin/sasl_check_pw") do
   it { should be_grouped_into default_group }
 end
 
-describe command("env userPassword='password' /usr/local/bin/sasl_check_pw #{sasldb_file} foo reallyenglish.com") do
+describe command("env userPassword='password' /usr/local/bin/sasl_check_pw #{sasldb_file} foo trombik.org") do
   its(:stdout) { should match(/^matched$/) }
   its(:stderr) { should match(/^$/) }
   its(:exit_status) { should eq 0 }

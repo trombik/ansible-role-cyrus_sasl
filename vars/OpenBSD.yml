@@ -1,3 +1,4 @@
+---
 __cyrus_sasl_package: cyrus-sasl--
 __cyrus_sasl_saslauthd_service: saslauthd
 __cyrus_sasl_plugin_dir: /usr/local/lib/sasl2
