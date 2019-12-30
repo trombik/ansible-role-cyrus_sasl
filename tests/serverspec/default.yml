@@ -3,6 +3,7 @@
   roles:
     - ansible-role-cyrus_sasl
   vars:
+    cyrus_sasl_debug: yes
     cyrus_sasl_user:
       foo:
         domain: trombik.org

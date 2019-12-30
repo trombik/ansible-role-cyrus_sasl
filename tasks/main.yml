@@ -29,7 +29,7 @@
 - name: Delete SASL users
   shell: "{{ cyrus_sasl_saslpassword_command }} -a '{{ item.value.appname }}' -u '{{ item.value.domain }}' -d -f '{{ cyrus_sasl_sasldb_file }}' '{{ item.key }}'"
   with_dict: "{{ cyrus_sasl_user }}"
-  no_log: yes
+  no_log: "{% if cyrus_sasl_debug %}no{% else %}yes{% endif %}"
   when:
     - item.value.state == 'absent'
     - item.key ~ '@' ~ item.value.domain in register_sasldblistusers.stdout_lines
@@ -37,7 +37,7 @@
 - name: Create SASL users
   shell: "echo -n {{ item.value.password }} | {{ cyrus_sasl_saslpassword_command }} -a '{{ item.value.appname }}' -u '{{ item.value.domain }}' -c -p -f '{{ cyrus_sasl_sasldb_file }}' {{ item.key }}"
   with_dict: "{{ cyrus_sasl_user }}"
-  no_log: yes
+  no_log: "{% if cyrus_sasl_debug %}no{% else %}yes{% endif %}"
   when:
     - item.value.state == 'present'
     - not item.key ~ '@' ~ item.value.domain in register_sasldblistusers.stdout_lines
@@ -82,14 +82,14 @@
   register: register_sasl_check_pw
   with_dict: "{{ cyrus_sasl_user }}"
   changed_when: false
-  no_log: no
+  no_log: "{% if cyrus_sasl_debug %}no{% else %}yes{% endif %}"
   when:
     - item.value.state == 'present'
 
 - name: Set password if necessary
   shell: "echo -n '{{ item.item.value.password }}' | {{ cyrus_sasl_saslpassword_command }} -p -f {{ cyrus_sasl_sasldb_file }} -u '{{ item.item.value.domain }}' '{{ item.item.key }}'"
   with_items: "{{ register_sasl_check_pw.results }}"
-  no_log: no
+  no_log: "{% if cyrus_sasl_debug %}no{% else %}yes{% endif %}"
   when:
     - "'does not match' in item.stdout_lines"
 

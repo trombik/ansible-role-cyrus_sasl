@@ -10,6 +10,7 @@ cyrus_sasl_sasldb_file: "{{ __cyrus_sasl_sasldb_file }}"
 cyrus_sasl_sasldb_owner: root
 cyrus_sasl_sasldb_group: "{{ __cyrus_sasl_sasldb_group }}"
 cyrus_sasl_sasldb_file_permission: "{{  __cyrus_sasl_sasldb_file_permission }}"
+cyrus_sasl_debug: no
 
 cyrus_sasl_user: {}
 cyrus_sasl_config: {}
