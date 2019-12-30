@@ -42,6 +42,7 @@ None
 | `cyrus_sasl_sasldb_owner` | owner of SASL DB file | `root` |
 | `cyrus_sasl_sasldb_group` | group of SASL DB file | `{{ __cyrus_sasl_sasldb_group }}` |
 | `cyrus_sasl_sasldb_file_permission` | file permission of SASL DB file | `{{  __cyrus_sasl_sasldb_file_permission }}` |
+| `cyrus_sasl_debug` | If `yes`, enable debug log in tasks where normally log is suppressed for security reasons. | `no` |
 | `cyrus_sasl_config` | a dict of application config (see below) | `{}` |
 | `cyrus_sasl_user` | a dict of users in SASL DB file (see below) | `{}` |
 
